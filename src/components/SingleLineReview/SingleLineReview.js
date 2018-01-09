@@ -2,7 +2,7 @@ import React from 'react';
 import './SingleLineReview.css';
 import {Col} from 'react-bootstrap';
 
- export class SingleLineReview extends React.Component {
+class SingleLineReview extends React.Component {
     render() {
       console.log(this.props);
       return (
@@ -21,4 +21,9 @@ import {Col} from 'react-bootstrap';
         </Col>    
         );
     }
+
+    componentWillMount(){
+    }
 }
+
+export default SingleLineReview;

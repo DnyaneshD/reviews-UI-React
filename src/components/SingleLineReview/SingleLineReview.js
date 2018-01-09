@@ -4,25 +4,21 @@ import {Col} from 'react-bootstrap';
 
 class SingleLineReview extends React.Component {
     render() {
-      console.log(this.props);
       return (
         <Col xs={6} xsOffset={2}>
           <div className="container">
               <div className="left">
                <p>
                  Read by <br/>
-                 14
+                 {this.props.numberOfViews}
                </p>
               </div>
-              <div className="right">Short description of review is here... <a>more</a> <br/>
-                On 12/12/2017
+              <div className="right"> <a>{this.props.topic}</a> <br/>
+                On {this.props.lastUpdated}
               </div> 
             </div>
         </Col>    
         );
-    }
-
-    componentWillMount(){
     }
 }
 

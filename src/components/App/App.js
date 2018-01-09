@@ -3,23 +3,26 @@ import './App.css';
 import SingleLineReview from '../SingleLineReview/SingleLineReview';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
+import { fetchItemsData } from '../../actions/items';
 
 class App extends Component {
   
   render() {
 
-    let names = ['Jake', 'Jon', 'Thruster','DD'];
+    console.log(this.props.items);
 
     const gridInstance = (
       <div>
         <Grid>
           <Row className="show-grid">
             <Col xs={12} md={12}>Reviews. Enjoy putting reviews here about anything and everything</Col>          
-            {names.map((name, index) => {
+            {this.props.items.map((review) => {
                       let props = {
-                        key: index,
-                        name: name,
-                        index: index
+                        key: review.id,
+                        id: review.id,
+                        topic: review.topic,
+                        numberOfViews: review.numberOfViews,
+                        lastUpdated: review.lastUpdated
                       }
                   return <SingleLineReview {...props}/>;
           })}
@@ -33,16 +36,21 @@ class App extends Component {
     );
     return gridInstance;
   }
+
+  componentWillMount(){
+    this.props.fetchData('http://localhost:3002/api/reviews');
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
+    items: state.items
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      //fetchData: (url) => dispatch(itemsFetchData(url))
+      fetchData: (url) => dispatch(fetchItemsData(url))
   };
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import './SingleLineReview.css';
-import {Col} from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 class SingleLineReview extends React.Component {
-    render() {
+  render() {
       return (
         <Col xs={6} xsOffset={2}>
           <div className="container">

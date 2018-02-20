@@ -13,6 +13,22 @@ export function changeProperty(propertyKey, value) {
     };
 }
 
+export function fetchReviewByReviewId(reviewDetails) {
+    return {
+        type: 'GET_RWEVIEW_BY_ID',
+        reviewDetails
+    };
+}
+
+export function fetchReviewDetailsByReviewId (reviewId) {
+    return (dispatch) => {
+        fetch("http://localhost:3002/api/review/"+ reviewId)
+        .then((response) => { return response.json()})
+        .then((reviewDetails) => {
+            dispatch(fetchReviewByReviewId(reviewDetails))
+        });
+    }
+}
 
 export function submitReview (url) {
     return (dispatch) => {

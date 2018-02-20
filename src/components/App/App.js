@@ -7,9 +7,13 @@ import { fetchItemsData } from '../../actions/items';
 
 class App extends Component {
 
-  addNewReview(e) {
-    e.preventDefault();
-    window.location = 'addNew';
+  constructor() {
+    super();
+    this.addNewReview = this.handleAddReview.bind(this);
+  }
+
+  handleAddReview() {
+    this.props.history.push("/review/newReview");
   }
   
   render() {

@@ -1,21 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
-import { submitReviewsData, changeProperty } from "./actions";
+import { submitReviewsData, changeProperty, fetchReviewDetailsByReviewId } from "./actions";
 import { Grid, Row, Col, Button } from "react-bootstrap";
 import  "./addReview.css"; 
+import { withRouter } from 'react-router-dom';
 
 class AddReview extends React.Component {
+  
   constructor() {
     super();
     this.onSubmitReview = this.handleSubmitReview.bind(this);
-    this.state = {
-      title: "",
-      description: ""
-    };
   }
 
   handleSubmitReview(event) {
     this.props.submitReview("http://localhost:3002/api/reviews");
+  }
+
+  componentWillMount(){
+    if(this.props.match.params.id !== "newReview"){
+      this.props.fetchReviewDetailsByReviewId(this.props.match.params.id);
+    }
   }
 
   render() {
@@ -33,9 +37,9 @@ class AddReview extends React.Component {
             </Col>
             <Col xs={1} md={8}>
               <input
-                name="title"
+                name="topic"
                 type="text"
-                value={this.props.title}
+                value={this.props.topic}
                 onChange={this.handleChange.bind(this)}
                 placeholder="Give a nice title..."
               />
@@ -79,17 +83,19 @@ class AddReview extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    items: state.items
+    topic: state.topic,
+    description: state.description
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     changeProperty: (propertyKey, value) => dispatch(changeProperty(propertyKey, value)),
-    submitReview: url => dispatch(submitReviewsData(url))
+    submitReview: url => dispatch(submitReviewsData(url)),
+    fetchReviewDetailsByReviewId: reveiwId => dispatch(fetchReviewDetailsByReviewId(reveiwId))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddReview);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddReview));

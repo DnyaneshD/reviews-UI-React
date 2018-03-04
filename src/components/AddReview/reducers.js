@@ -1,5 +1,6 @@
 function initialState() {
   return {
+    Id: "",
     topic: "",
     description: ""
   };
@@ -11,14 +12,16 @@ export function addReviewReducer(state = initialState(), action) {
       submitReview(state);
       return state;
 
-    case "CHANGE_PROPERTY":
-      state[action.propertyKey] = action.value;
-      return state;
+    case "CHANGE_PROPERTY_REVIEW":
+      return changeProperty(state, action);
 
     case "GET_RWEVIEW_BY_ID":
       return {
         ...state,
-        topic: "TESTS"
+        Id: action.reviewDetails.id,
+        topic: action.reviewDetails.topic,
+        description: action.reviewDetails.autherReview,
+        socialReviews: action.reviewDetails.socialReviews
       }
 
     default:
@@ -27,13 +30,14 @@ export function addReviewReducer(state = initialState(), action) {
 
   function submitReview(state) {
     const submitDataObject = {
-      topic: state.title,
+      Id: state.Id,
+      topic: state.topic,
       autherReview: state.description,
       votes: 0
     };
-
+    
     fetch("http://localhost:3002/api/review", {
-      method: "POST",
+      method: submitDataObject.Id ? "PUT" : "POST",
       body: JSON.stringify(submitDataObject),
       headers: new Headers({
         'Content-Type': 'application/json'
@@ -42,5 +46,12 @@ export function addReviewReducer(state = initialState(), action) {
       window.location = 'home';
       return response.json();
     });
+  }
+
+  function changeProperty(state, action){
+    return {
+        ...state,
+        [action.propertyKey] : action.value
+      };
   }
 }

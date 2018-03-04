@@ -1,23 +1,37 @@
 import React from "react";
 import { connect } from "react-redux";
-import { submitReviewsData, changeProperty, fetchReviewDetailsByReviewId } from "./actions";
+import {
+  submitReviewsData,
+  changeProperty,
+  fetchReviewDetailsByReviewId
+} from "./actions";
 import { Grid, Row, Col, Button } from "react-bootstrap";
-import  "./addReview.css"; 
-import { withRouter } from 'react-router-dom';
+import "./addReview.css";
+import { withRouter } from "react-router-dom";
+import Comment from "../Comment/Comment.js";
 
 class AddReview extends React.Component {
-  
   constructor() {
     super();
     this.onSubmitReview = this.handleSubmitReview.bind(this);
+    this.onAddComments = this.handleRenderComments.bind(this);
+    this.state = {
+      showComponent: false
+    };
   }
 
   handleSubmitReview(event) {
     this.props.submitReview("http://localhost:3002/api/reviews");
   }
 
-  componentWillMount(){
-    if(this.props.match.params.id !== "newReview"){
+  handleRenderComments(event) {
+    this.setState({
+      showComponent: true
+    });
+  }
+
+  componentWillMount() {
+    if (this.props.match.params.id !== "newReview") {
       this.props.fetchReviewDetailsByReviewId(this.props.match.params.id);
     }
   }
@@ -52,7 +66,7 @@ class AddReview extends React.Component {
             <Col xs={4} md={8}>
               <textarea
                 name="description"
-                className=".textArea-Size" 
+                className=".textArea-Size"
                 type="text"
                 value={this.props.description}
                 onChange={this.handleChange.bind(this)}
@@ -69,8 +83,29 @@ class AddReview extends React.Component {
             </Col>
           </Row>
           <Row className="show-grid">
+            <Col xs={10} md={10}>
+              <Button className="btn pull-right" onClick={this.onSubmitReview}>
+                Submit Review
+              </Button>
+            </Col>
+          </Row>
+          <Row className="show-grid">
             <Col xs={8} md={4}>
-              <Button onClick={this.onSubmitReview}>Submit Review</Button>
+              <Button onClick={this.onAddComments}>Comments</Button>
+            </Col>
+          </Row>
+          
+          { this.state.showComponent ?  <Comment />  : null}
+          <Row className="show-grid">
+            <Col xs={8} md={4}>
+              {this.props.socialReviews? this.props.socialReviews.map(socialReview => {
+                const commentProps = {
+                  key: socialReview.id,
+                  Id: socialReview.id,
+                  comment: socialReview.review
+                };
+                return <Comment {...commentProps} />;
+              }): null}
             </Col>
           </Row>
         </Grid>
@@ -83,19 +118,25 @@ class AddReview extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    topic: state.topic,
-    description: state.description
+    Id: state.addReviewReducer.Id,
+    topic: state.addReviewReducer.topic,
+    description: state.addReviewReducer.description,
+    socialReviews: state.addReviewReducer.socialReviews
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeProperty: (propertyKey, value) => dispatch(changeProperty(propertyKey, value)),
+    changeProperty: (propertyKey, value) =>
+      dispatch(changeProperty(propertyKey, value)),
     submitReview: url => dispatch(submitReviewsData(url)),
-    fetchReviewDetailsByReviewId: reveiwId => dispatch(fetchReviewDetailsByReviewId(reveiwId))
+    fetchReviewDetailsByReviewId: reveiwId =>
+      dispatch(fetchReviewDetailsByReviewId(reveiwId))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddReview));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withRouter(AddReview)
+);

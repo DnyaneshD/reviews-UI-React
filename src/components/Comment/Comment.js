@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Row, Col, Label, Button } from "react-bootstrap";
+import { Grid, Row, Col, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { submitCommentData, changeProperty } from "./actions";
 import { withRouter } from "react-router-dom";
@@ -8,10 +8,21 @@ class Comment extends React.Component {
   constructor() {
     super();
     this.onPostComments = this.handleSubmitComment.bind(this);
+    this.state = {
+      showPostCommentsButton: false
+    };
   }
 
   handleSubmitComment(event) {
     this.props.submitComment(this.props.match.params.id);
+  }
+
+  componentWillMount(){
+    if (this.props.match.params.id !== "newReview") {
+      this.setState({
+        showPostCommentsButton: true
+      });
+    }
   }
 
   render() {
@@ -32,12 +43,13 @@ class Comment extends React.Component {
                   aria-label="With textarea"
                 />
               </div>
-              <Button className="btn pull-right" onClick={this.onPostComments}>
-                Post Comment
-              </Button>
-            </div>
-            <div>
-              <Label bsStyle="default">Default</Label>{" "}
+              {
+                 !(this.props.Id) ?
+                 <Button className="btn pull-right" onClick={this.onPostComments}>
+                   Post Comment
+                 </Button>
+                 : null
+              }
             </div>
           </Col>
         </Row>

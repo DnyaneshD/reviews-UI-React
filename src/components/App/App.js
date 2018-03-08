@@ -4,7 +4,7 @@ import SingleLineReview from '../SingleLineReview/SingleLineReview';
 import { connect } from 'react-redux';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
 import { fetchItemsData } from '../../actions/items';
-
+import  Header  from '../Header/Header' 
 class App extends Component {
 
   constructor() {
@@ -19,8 +19,9 @@ class App extends Component {
   render() {
     const gridInstance = (
       <div>
+        <Header/>
         <Grid>
-          <Row className="show-grid">
+          <Row className="show-grid container">
            <Col xs={12} md={12}>Reviews. Enjoy putting reviews here about anything and everything</Col>
            <Col xs={8} md={12}>
              <Button onClick={this.addNewReview}>Add new Review</Button>

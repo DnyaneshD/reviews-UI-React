@@ -16,7 +16,8 @@ class AddReview extends React.Component {
     this.onSubmitReview = this.handleSubmitReview.bind(this);
     this.onAddComments = this.handleRenderComments.bind(this);
     this.state = {
-      showComponent: false
+      showAddCommentsButton: false,
+      showCommentsComponent: false
     };
   }
 
@@ -26,13 +27,16 @@ class AddReview extends React.Component {
 
   handleRenderComments(event) {
     this.setState({
-      showComponent: true
+      showCommentsComponent: true
     });
   }
 
   componentWillMount() {
     if (this.props.match.params.id !== "newReview") {
       this.props.fetchReviewDetailsByReviewId(this.props.match.params.id);
+      this.setState({
+        showAddCommentsButton: true
+      });
     }
   }
 
@@ -40,12 +44,12 @@ class AddReview extends React.Component {
     return (
       <div>
         <Grid>
-          <Row className="show-grid">
+          <Row className="show-grid container">
             <Col xs={12} md={12}>
               Reviews. Enjoy putting reviews here about anything and everything
             </Col>
           </Row>
-          <Row className="show-grid">
+          <Row className="show-grid container">
             <Col xs={8} md={2}>
               Title
             </Col>
@@ -59,7 +63,7 @@ class AddReview extends React.Component {
               />
             </Col>
           </Row>
-          <Row className="show-grid">
+          <Row className="show-grid container">
             <Col xs={4} md={2}>
               Description
             </Col>
@@ -74,7 +78,7 @@ class AddReview extends React.Component {
               />
             </Col>
           </Row>
-          <Row className="show-grid">
+          <Row className="show-grid container">
             <Col xs={4} md={2}>
               Tags
             </Col>
@@ -82,21 +86,23 @@ class AddReview extends React.Component {
               <input />
             </Col>
           </Row>
-          <Row className="show-grid">
+          <Row className="show-grid container .col-xs-4">
             <Col xs={10} md={10}>
               <Button className="btn pull-right" onClick={this.onSubmitReview}>
                 Submit Review
               </Button>
             </Col>
           </Row>
-          <Row className="show-grid">
+          <Row className="show-grid container">
             <Col xs={8} md={4}>
+              { this.state.showAddCommentsButton ? 
               <Button onClick={this.onAddComments}>Comments</Button>
+              : null }
             </Col>
           </Row>
           
-          { this.state.showComponent ?  <Comment />  : null}
-          <Row className="show-grid">
+          { this.state.showCommentsComponent ?  <Comment />  : null}
+          <Row className="show-grid container">
             <Col xs={8} md={4}>
               {this.props.socialReviews? this.props.socialReviews.map(socialReview => {
                 const commentProps = {

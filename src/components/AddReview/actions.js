@@ -7,7 +7,7 @@ export function submitReviewsData(items) {
 
 export function changeProperty(propertyKey, value) {
     return {
-        type: 'CHANGE_PROPERTY',
+        type: 'CHANGE_PROPERTY_REVIEW',
         propertyKey,
         value
     };

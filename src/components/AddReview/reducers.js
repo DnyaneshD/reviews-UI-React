@@ -2,7 +2,8 @@ function initialState() {
   return {
     Id: "",
     topic: "",
-    description: ""
+    description: "",
+    isShowAddCommentsComponent: false
   };
 }
 
@@ -21,7 +22,8 @@ export function addReviewReducer(state = initialState(), action) {
         Id: action.reviewDetails.id,
         topic: action.reviewDetails.topic,
         description: action.reviewDetails.autherReview,
-        socialReviews: action.reviewDetails.socialReviews
+        socialReviews: action.reviewDetails.socialReviews,
+        isShowAddCommentsComponent: false
       }
 
     default:

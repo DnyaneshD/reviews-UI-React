@@ -9,6 +9,7 @@ import { Grid, Row, Col, Button } from "react-bootstrap";
 import "./addReview.css";
 import { withRouter } from "react-router-dom";
 import Comment from "../Comment/Comment.js";
+import Constants from "../../constants";
 
 class AddReview extends React.Component {
   constructor() {
@@ -16,8 +17,7 @@ class AddReview extends React.Component {
     this.onSubmitReview = this.handleSubmitReview.bind(this);
     this.onAddComments = this.handleRenderComments.bind(this);
     this.state = {
-      showAddCommentsButton: false,
-      showCommentsComponent: false
+      showAddCommentsButton: true
     };
   }
 
@@ -26,9 +26,7 @@ class AddReview extends React.Component {
   }
 
   handleRenderComments(event) {
-    this.setState({
-      showCommentsComponent: true
-    });
+    this.props.changeProperty(Constants.isShowAddCommentsComponent, true);
   }
 
   componentWillMount() {
@@ -45,15 +43,15 @@ class AddReview extends React.Component {
       <div>
         <Grid>
           <Row className="show-grid container">
-            <Col xs={12} md={12}>
+            <Col xs={10} md={12}>
               Reviews. Enjoy putting reviews here about anything and everything
             </Col>
           </Row>
           <Row className="show-grid container">
-            <Col xs={8} md={2}>
+            <Col xs={2} md={2}>
               Title
             </Col>
-            <Col xs={1} md={8}>
+            <Col xs={10} md={10}>
               <input
                 name="topic"
                 type="text"
@@ -64,13 +62,12 @@ class AddReview extends React.Component {
             </Col>
           </Row>
           <Row className="show-grid container">
-            <Col xs={4} md={2}>
+            <Col xs={2} md={2}>
               Description
             </Col>
-            <Col xs={4} md={8}>
+            <Col xs={10} md={10}>
               <textarea
                 name="description"
-                className=".textArea-Size"
                 type="text"
                 value={this.props.description}
                 onChange={this.handleChange.bind(this)}
@@ -79,11 +76,11 @@ class AddReview extends React.Component {
             </Col>
           </Row>
           <Row className="show-grid container">
-            <Col xs={4} md={2}>
+            <Col xs={2} md={2}>
               Tags
             </Col>
-            <Col xs={1} md={4}>
-              <input />
+            <Col xs={10} md={10}>
+              <input type="text"/>
             </Col>
           </Row>
           <Row className="show-grid container .col-xs-4">
@@ -94,16 +91,16 @@ class AddReview extends React.Component {
             </Col>
           </Row>
           <Row className="show-grid container">
-            <Col xs={8} md={4}>
+            <Col xs={10} md={10}>
               { this.state.showAddCommentsButton ? 
               <Button onClick={this.onAddComments}>Comments</Button>
               : null }
             </Col>
           </Row>
           
-          { this.state.showCommentsComponent ?  <Comment />  : null}
+          { this.props.isShowAddCommentsComponent ?  <Comment />  : null}
           <Row className="show-grid container">
-            <Col xs={8} md={4}>
+            <Col xs={10} md={10}>
               {this.props.socialReviews? this.props.socialReviews.map(socialReview => {
                 const commentProps = {
                   key: socialReview.id,
@@ -129,7 +126,8 @@ const mapStateToProps = state => {
     Id: state.addReviewReducer.Id,
     topic: state.addReviewReducer.topic,
     description: state.addReviewReducer.description,
-    socialReviews: state.addReviewReducer.socialReviews
+    socialReviews: state.addReviewReducer.socialReviews,
+    isShowAddCommentsComponent: state.addReviewReducer.isShowAddCommentsComponent
   };
 };
 
